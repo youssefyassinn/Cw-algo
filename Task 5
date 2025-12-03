@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int sortDisks(vector<char>& a) {
+    int n= a.size();
+    int moves= 0;
+    
+    for (int i=0; i< n-1; i++) {
+        for (int j=0; j< n-1; j++) {
+            if (a[j]== 'D' && a[j+1]== 'L') {
+                swap(a[j], a[j+1]);
+                moves++;
+            }
+        }
+    }
+    return moves;
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of disks: ";
+    cin >> n;
+    
+    vector<char>disks(2*n);
+    
+    for (int i=0; i<2*n; i++) {
+        if (i%2== 0)
+        disks[i]= 'D';
+        else
+        disks[i]= 'L';
+    }
+    
+    cout << "Initial: ";
+    for (int i= 0; i<disks.size(); i++) {
+        cout << disks[i] << " ";
+    }
+    cout << endl;
+    
+    int moves= sortDisks(disks);
+    
+    cout << "Final: ";
+    for (int i= 0; i<disks.size(); i++) {
+        cout << disks[i] << " ";
+    }
+    cout << endl;
+    cout << "Total moves: " << moves;
+
+}
