@@ -1,3 +1,5 @@
+
+\\o(n)
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -68,3 +70,66 @@ int main() {
 
     return 0;
 }
+
+\\o(1)
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+string determineFakeCoinNature(int A, int B, int C) {
+    if (A == B) {
+        if (C < A) return "Fake coin is LIGHTER.";
+        else return "Fake coin is HEAVIER.";
+    } else {
+        if (A == C) {
+            if (B < A) return "Fake coin is LIGHTER.";
+            else return "Fake coin is HEAVIER.";
+        } else {
+            if (A < B) return "Fake coin is LIGHTER.";
+            else return "Fake coin is HEAVIER.";
+        }
+    }
+}
+
+int main() {
+    srand(time(0));
+
+    int n;
+    cout << "Enter number of coins: ";
+    cin >> n;
+
+    if (n <= 2) {
+        cout << "Error: n must be greater than 2." << endl;
+        return 0;
+    }
+
+    vector<int> coins(n, 10); 
+
+    int fakeIndex = rand() % n; 
+
+    bool fakeIsLighter = rand() % 2;
+
+    if (fakeIsLighter)
+        coins[fakeIndex] = 9; 
+    else
+        coins[fakeIndex] = 11; 
+
+    int A = coins[0];
+    int B = coins[1];
+    int C = coins[2];
+
+    cout << "\nUsing coins A, B, and C\n";
+    cout << "A = " << A << ", B = " << B << ", C = " << C << endl;
+
+    string result = determineFakeCoinNature(A, B, C);
+
+    cout << "\nResult: " << result << endl;
+
+    cout << "Fake coin is coin " << fakeIndex 
+         << " , Weight = " << coins[fakeIndex] << endl;
+
+    return 0;
+}
+
