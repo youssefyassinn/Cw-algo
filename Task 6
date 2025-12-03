@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+string checkFake(int A, int B, int C) {
+    if (A == B) {
+        if (C < A) {
+            return "Fake coin is LIGHTER.";
+        } else {
+            return "Fake coin is HEAVIER.";
+        }
+    } else {
+        if (A == C) {
+            if (B < A) {
+                return "Fake coin is LIGHTER.";
+            } else {
+                return "Fake coin is HEAVIER.";
+            }
+        } else {
+            if (A < B) {
+                return "Fake coin is LIGHTER.";
+            } else {
+                return "Fake coin is HEAVIER.";
+            }
+        }
+    }
+}
+
+int main() {
+    srand(time(0));
+
+    int n;
+    cout << "Enter number of coins: ";
+    cin >> n;
+
+    if (n <= 2) {
+        cout << "Error: n must be greater than 2." << endl;
+        return 0;
+    }
+    int genuine = 10;
+    
+    vector<int> coins(n, genuine);
+
+    int fakeIndex = rand() % n;
+
+    int fakeWeight;
+    if (rand() % 2 == 0) {
+        fakeWeight = genuine - 1;  
+    } else {
+        fakeWeight = genuine + 1;  
+    }
+
+    coins[fakeIndex] = fakeWeight;
+
+    int A = coins[0];
+    int B = coins[1];
+    int C = coins[2];
+
+    cout << "Coins used (A, B, C): " << A << ", " << B << ", " << C << endl;
+    
+    cout << "Result: " << checkFake(A, B, C) << endl;
+
+    cout << "Fake coin index: " << fakeIndex
+         << ", Fake Weight = " << fakeWeight
+         << ", Genuine Weight = " << genuine << endl;
+
+    return 0;
+}
