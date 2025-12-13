@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
+using namespace std;
+
+void copyArr(int a[], int b[], int n){ for(int i=0;i<n;i++) b[i]=a[i]; }
+void randomArr(int a[], int n){ for(int i=0;i<n;i++) a[i]=rand()%100; }
+void sortedArr(int a[], int n){ for(int i=0;i<n;i++) a[i]=i; }
+void reverseArr(int a[], int n){ for(int i=0;i<n;i++) a[i]=n-i; }
+
+int bubble(int a[], int n){
+    int comp=0;
+    for(int i=0;i<n-1;i++)
+        for(int j=0;j<n-i-1;j++){
+            comp++; if(a[j]>a[j+1]) swap(a[j],a[j+1]);
+        }
+    return comp;
+}
+
+int selection(int a[], int n){
+    int comp=0;
+    for(int i=0;i<n-1;i++){
+        int m=i;
+        for(int j=i+1;j<n;j++){ comp++; if(a[j]<a[m]) m=j; }
+        swap(a[i],a[m]);
+    }
+    return comp;
+}
+
+int insertion(int a[], int n){
+    int comp=0;
+    for(int i=1;i<n;i++){
+        int key=a[i], j=i-1;
+        while(j>=0){ comp++; if(a[j]>key) a[j+1]=a[j]; else break; j--; }
+        a[j+1]=key;
+    }
+    return comp;
+}
+
+void test(){
+    srand(time(NULL));
+    int arr[20], tmp[20];
+    cout<<fixed<<setprecision(6);
+
+    for(int n=1;n<=20;n++){
+        for(int t=0;t<3;t++){
+            string type=(t==0)?"Random":(t==1)?"Sorted":"Reverse";
+            if(t==0) randomArr(arr,n);
+            if(t==1) sortedArr(arr,n);
+            if(t==2) reverseArr(arr,n);
+
+            copyArr(arr,tmp,n);
+            clock_t s=clock(); int c=bubble(tmp,n);
+            double time=double(clock()-s)/CLOCKS_PER_SEC;
+            cout<<"Bubble | "<<type<<" | n="<<n<<" | comp="<<c<<" | time="<<time<<endl;
+
+            copyArr(arr,tmp,n); s=clock(); c=selection(tmp,n);
+            time=double(clock()-s)/CLOCKS_PER_SEC;
+            cout<<"Selection | "<<type<<" | n="<<n<<" | comp="<<c<<" | time="<<time<<endl;
+
+            copyArr(arr,tmp,n); s=clock(); c=insertion(tmp,n);
+            time=double(clock()-s)/CLOCKS_PER_SEC;
+            cout<<"Insertion | "<<type<<" | n="<<n<<" | comp="<<c<<" | time="<<time<<endl;
+
+            cout<<"---------------------------------------------"<<endl;
+        }
+    }
+}
+
+int main(){ test(); return 0; }
