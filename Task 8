@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MAXS = 5;
+const int MAXH = 5;
+
+int stacks[MAXS][MAXH];
+int height[MAXS];
+int n, H;
+
+string getState() {
+    string s = "";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < height[i]; j++) {
+            s += to_string(stacks[i][j]) + " "; 
+        }
+        s += "|"; 
+    }
+    return s;
+}
+
+bool solved() {
+    for (int s = 0; s < n; s++) {
+        if (height[s] == 0) continue;
+        int c = stacks[s][0];
+        for (int i = 0; i < height[s]; i++)
+            if (stacks[s][i] != c)
+                return false;
+    }
+    return true;
+}
+
+bool canMove(int a, int b) {
+    if (a == b || height[a] == 0 || height[b] == H)
+        return false;
+    if (height[b] == 0)
+        return true;
+    return stacks[a][height[a] - 1] == stacks[b][height[b] - 1];
+}
+
+vector<string> visited;
+
+bool dfs() {
+    string state = getState();
+
+    bool alreadyVisited = false;
+    for (int i = 0; i < visited.size(); i++)
+        if (visited[i] == state) {
+            alreadyVisited = true;
+            break;
+        }
+    if (alreadyVisited) return false;
+
+    visited.push_back(state);
+
+    if (solved()) return true;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+
+            if (i != j && height[i] > 0 && height[j] < H &&
+                (height[j] == 0 || stacks[i][height[i] - 1] == stacks[j][height[j] - 1])) {
+
+                int ball = stacks[i][--height[i]];
+                stacks[j][height[j]++] = ball;
+
+                cout << "Move ball from stack " << i << " to stack " << j << endl;
+
+                if (dfs()) return true;
+
+                stacks[i][height[i]++] = ball;
+                height[j]--;
+            }
+        }
+    }
+    return false;
+}
+
+int main() {
+    cout << "Enter number of stacks: ";
+    cin >> n;
+    cout << "Enter max height per stack: ";
+    cin >> H;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter number of balls in stack " << i << ": ";
+        cin >> height[i];
+        cout << "Enter colors of balls (bottom to top) separated by spaces: ";
+        for (int j = 0; j < height[i]; j++)
+            cin >> stacks[i][j];
+    }
+
+    cout << "Initial Stacks:";
+    for (int i = 0; i < n; i++) {
+        cout << "Stack " << i << ": ";
+        for (int j = 0; j < height[i]; j++)
+            cout << stacks[i][j] << " ";
+        cout << endl;
+    }
+
+    cout << "Solving";
+    if (dfs())
+        cout << "Solved";
+    else
+        cout << "No solution found.";
+}
