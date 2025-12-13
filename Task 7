@@ -97,7 +97,7 @@ int main() {
     int b = budget;
     int i = count;
 
-    cout << "Items you should buy (DP)" << endl;
+    cout << "Items you should buy " << endl;
 
     int total = 0;
 
