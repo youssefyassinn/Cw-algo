@@ -101,7 +101,7 @@ int main() {
 
     cout << "Solving";
     if (dfs())
-        cout << "Solved";
+        cout << "Solved!";
     else
         cout << "No solution found.";
 }
